@@ -26,8 +26,8 @@ describe('jqLite', function() {
           var expect = jqLite(expected[i])[0];
           value = value && equals(expect, actual);
           msg = "Not equal at index: " + i
-              + " - Expected: " + expect
-              + " - Actual: " + actual;
+            + " - Expected: " + expect
+            + " - Actual: " + actual;
         }
         return value;
       }
@@ -129,6 +129,67 @@ describe('jqLite', function() {
     });
   });
 
+  describe('security', function() {
+
+    it('shouldn\'t unsanitize sanitized code', function(done) {
+      var counter = 0,
+        assertCount = 13,
+        container = jqLite('<div></div>');
+
+      function donePartial() {
+        counter++;
+        if (counter === assertCount) {
+          container.remove();
+          delete window.xss;
+        }
+      }
+
+      jqLite(document.body).append(container);
+      window.xss = jasmine.createSpy('xss');
+
+      // Thanks to Masato Kinugawa from Cure53 for providing the following test cases.
+      // Note: below test cases need to invoke the xss function with consecutive
+      // decimal parameters for the assertions to be correct.
+      forEach([
+        '<img alt="<x" title="/><img src=url404 onerror=xss(0)>">',
+        '<img alt="\n<x" title="/>\n<img src=url404 onerror=xss(1)>">',
+        '<style><img src=url404 onerror=xss(2)><style/>',
+        '<xmp><img src=url404 onerror=xss(3)><xmp/>',
+        '<title><img src=url404 onerror=xss(4)><title />',
+        '<iframe><img src=url404 onerror=xss(5)><iframe/>',
+        '<noframes><img src=url404 onerror=xss(6)><noframes/>',
+        '<noscript><img src=url404 onerror=xss(7)><noscript/>',
+        '<foo" alt="" title="/><img src=url404 onerror=xss(8)>">',
+        '<img alt="<x" title="" src="/><img src=url404 onerror=xss(9)>">',
+        '<noscript><img src=url404 onerror=xss(10)><noscript/>',
+        '<noembed><img src=url404 onerror=xss(11)><noembed/>',
+      ], function(htmlString, index) {
+        var element = jqLite('<div></div>');
+
+        container.append(element);
+        element.append(jqLite(htmlString));
+
+        window.setTimeout(function() {
+          expect(window.xss).not.toHaveBeenCalledWith(index);
+          donePartial();
+        }, 1000);
+      });
+    });
+
+    it('should allow to restore legacy insecure behavior', function() {
+      // jQuery doesn't have this API.
+      if (!_jqLiteMode) return;
+
+      // eslint-disable-next-line new-cap
+      angular.UNSAFE_restoreLegacyJqLiteXHTMLReplacement();
+
+      var elem = jqLite('<div/><span/>');
+      expect(elem.length).toBe(2);
+      expect(elem[0].nodeName.toLowerCase()).toBe('div');
+      expect(elem[1].nodeName.toLowerCase()).toBe('span');
+    });
+  })
+
   describe('_data', function() {
     it('should provide access to the events present on the element', function() {
       var element = jqLite('<i>foo</i>');
@@ -169,8 +230,8 @@ describe('jqLite', function() {
     it('should work with the child html element instead if the current element is the document obj',
       function() {
         var item = {},
-            doc = jqLite(document),
-            html = doc.find('html');
+          doc = jqLite(document),
+          html = doc.find('html');
 
         html.data('item', item);
         expect(doc.inheritedData('item')).toBe(item);
@@ -181,8 +242,8 @@ describe('jqLite', function() {
 
     it('should return null values', function() {
       var ul = jqLite('<ul><li><p><b>deep deep</b><p></li></ul>'),
-          li = ul.find('li'),
-          b = li.find('b');
+        li = ul.find('li'),
+        b = li.find('b');
 
       ul.data('foo', 'bar');
       li.data('foo', null);
@@ -195,8 +256,8 @@ describe('jqLite', function() {
 
     it('should pass through DocumentFragment boundaries via host', function() {
       var host = jqLite('<div></div>'),
-          frag = document.createDocumentFragment(),
-          $frag = jqLite(frag);
+        frag = document.createDocumentFragment(),
+        $frag = jqLite(frag);
       frag.host = host[0];
       host.data("foo", 123);
       host.append($frag);
@@ -224,17 +285,17 @@ describe('jqLite', function() {
     });
 
     it('should retrieve scope attached to the html element if it\'s requested on the document',
-        function() {
-      var doc = jqLite(document),
+      function() {
+        var doc = jqLite(document),
           html = doc.find('html'),
           scope = {};
 
-      html.data('$scope', scope);
+        html.data('$scope', scope);
 
-      expect(doc.scope()).toBe(scope);
-      expect(html.scope()).toBe(scope);
-      dealoc(doc);
-    });
+        expect(doc.scope()).toBe(scope);
+        expect(html.scope()).toBe(scope);
+        dealoc(doc);
+      });
 
     it('should walk up the dom to find scope', function() {
       var element = jqLite('<ul><li><p><b>deep deep</b><p></li></ul>');
@@ -294,17 +355,17 @@ describe('jqLite', function() {
 
 
     it('should retrieve injector attached to the html element if it\'s requested on document',
-        function() {
-      var doc = jqLite(document),
+      function() {
+        var doc = jqLite(document),
           html = doc.find('html'),
           injector = {};
 
-      html.data('$injector', injector);
+        html.data('$injector', injector);
 
-      expect(doc.injector()).toBe(injector);
-      expect(html.injector()).toBe(injector);
-      dealoc(doc);
-    });
+        expect(doc.injector()).toBe(injector);
+        expect(html.injector()).toBe(injector);
+        dealoc(doc);
+      });
 
 
     it('should do nothing with a noncompiled template', function() {
@@ -318,7 +379,7 @@ describe('jqLite', function() {
   describe('controller', function() {
     it('should retrieve controller attached to the current element or its parent', function() {
       var div = jqLite('<div><span></span></div>'),
-          span = div.find('span');
+        span = div.find('span');
 
       div.data('$ngControllerController', 'ngController');
       span.data('$otherController', 'other');
@@ -456,8 +517,8 @@ describe('jqLite', function() {
 
     it('should keep data if an element is removed via detach()', function() {
       var root = jqLite('<div><span>abc</span></div>'),
-          span = root.find('span'),
-          data = span.data();
+        span = root.find('span'),
+        data = span.data();
 
       span.data('foo', 'bar');
       span.detach();
@@ -481,7 +542,7 @@ describe('jqLite', function() {
 
     it('should create a new data object if called without args', function() {
       var element = jqLite(a),
-          data = element.data();
+        data = element.data();
 
       expect(data).toEqual({});
       element.data('foo', 'bar');
@@ -490,7 +551,7 @@ describe('jqLite', function() {
 
     it('should create a new data object if called with a single object arg', function() {
       var element = jqLite(a),
-          newData = {foo: 'bar'};
+        newData = {foo: 'bar'};
 
       element.data(newData);
       expect(element.data()).toEqual({foo: 'bar'});
@@ -498,23 +559,23 @@ describe('jqLite', function() {
     });
 
     it('should merge existing data object with a new one if called with a single object arg',
-        function() {
-      var element = jqLite(a);
-      element.data('existing', 'val');
-      expect(element.data()).toEqual({existing: 'val'});
+      function() {
+        var element = jqLite(a);
+        element.data('existing', 'val');
+        expect(element.data()).toEqual({existing: 'val'});
 
-      var oldData = element.data(),
+        var oldData = element.data(),
           newData = {meLike: 'turtles', 'youLike': 'carrots'};
 
-      expect(element.data(newData)).toBe(element);
-      expect(element.data()).toEqual({meLike: 'turtles', youLike: 'carrots', existing: 'val'});
-      expect(element.data()).toBe(oldData); // merge into the old object
-    });
+        expect(element.data(newData)).toBe(element);
+        expect(element.data()).toEqual({meLike: 'turtles', youLike: 'carrots', existing: 'val'});
+        expect(element.data()).toBe(oldData); // merge into the old object
+      });
 
     describe('data cleanup', function() {
       it('should remove data on element removal', function() {
         var div = jqLite('<div><span>text</span></div>'),
-            span = div.find('span');
+          span = div.find('span');
 
         span.data('name', 'angular');
         span.remove();
@@ -523,8 +584,8 @@ describe('jqLite', function() {
 
       it('should remove event listeners on element removal', function() {
         var div = jqLite('<div><span>text</span></div>'),
-            span = div.find('span'),
-            log = '';
+          span = div.find('span'),
+          log = '';
 
         span.on('click', function() { log += 'click;'; });
         browserTrigger(span);
@@ -966,20 +1027,20 @@ describe('jqLite', function() {
     it('should get an array of selected elements from a multi select', function() {
       expect(jqLite(
         '<select multiple>' +
-          '<option selected>test 1</option>' +
-          '<option selected>test 2</option>' +
+        '<option selected>test 1</option>' +
+        '<option selected>test 2</option>' +
         '</select>').val()).toEqual(['test 1', 'test 2']);
 
       expect(jqLite(
         '<select multiple>' +
-          '<option selected>test 1</option>' +
-          '<option>test 2</option>' +
+        '<option selected>test 1</option>' +
+        '<option>test 2</option>' +
         '</select>').val()).toEqual(['test 1']);
 
       expect(jqLite(
         '<select multiple>' +
-          '<option>test 1</option>' +
-          '<option>test 2</option>' +
+        '<option>test 1</option>' +
+        '<option>test 2</option>' +
         '</select>').val()).toEqual(null);
     });
   });
@@ -1065,7 +1126,7 @@ describe('jqLite', function() {
 
     it('should bind to all events separated by space', function() {
       var elm = jqLite(a),
-          callback = jasmine.createSpy('callback');
+        callback = jasmine.createSpy('callback');
 
       elm.on('click keypress', callback);
       elm.on('click', callback);
@@ -1091,7 +1152,7 @@ describe('jqLite', function() {
 
     it('should have event.isDefaultPrevented method', function() {
       var element = jqLite(a),
-          clickSpy = jasmine.createSpy('clickSpy');
+        clickSpy = jasmine.createSpy('clickSpy');
 
       clickSpy.andCallFake(function(e) {
         expect(function() {
@@ -1109,10 +1170,10 @@ describe('jqLite', function() {
 
     it('should stop triggering handlers when stopImmediatePropagation is called', function() {
       var element = jqLite(a),
-          clickSpy1 = jasmine.createSpy('clickSpy1'),
-          clickSpy2 = jasmine.createSpy('clickSpy2').andCallFake(function(event) { event.stopImmediatePropagation(); }),
-          clickSpy3 = jasmine.createSpy('clickSpy3'),
-          clickSpy4 = jasmine.createSpy('clickSpy4');
+        clickSpy1 = jasmine.createSpy('clickSpy1'),
+        clickSpy2 = jasmine.createSpy('clickSpy2').andCallFake(function(event) { event.stopImmediatePropagation(); }),
+        clickSpy3 = jasmine.createSpy('clickSpy3'),
+        clickSpy4 = jasmine.createSpy('clickSpy4');
 
       element.on('click', clickSpy1);
       element.on('click', clickSpy2);
@@ -1129,12 +1190,12 @@ describe('jqLite', function() {
 
     it('should execute stopPropagation when stopImmediatePropagation is called', function() {
       var element = jqLite(a),
-          clickSpy = jasmine.createSpy('clickSpy');
+        clickSpy = jasmine.createSpy('clickSpy');
 
       clickSpy.andCallFake(function(event) {
-          spyOn(event, 'stopPropagation');
-          event.stopImmediatePropagation();
-          expect(event.stopPropagation).toHaveBeenCalled();
+        spyOn(event, 'stopPropagation');
+        event.stopImmediatePropagation();
+        expect(event.stopPropagation).toHaveBeenCalled();
       });
 
       element.on('click', clickSpy);
@@ -1145,12 +1206,12 @@ describe('jqLite', function() {
 
     it('should have event.isImmediatePropagationStopped method', function() {
       var element = jqLite(a),
-          clickSpy = jasmine.createSpy('clickSpy');
+        clickSpy = jasmine.createSpy('clickSpy');
 
       clickSpy.andCallFake(function(event) {
-          expect(event.isImmediatePropagationStopped()).toBe(false);
-          event.stopImmediatePropagation();
-          expect(event.isImmediatePropagationStopped()).toBe(true);
+        expect(event.isImmediatePropagationStopped()).toBe(false);
+        event.stopImmediatePropagation();
+        expect(event.isImmediatePropagationStopped()).toBe(true);
       });
 
       element.on('click', clickSpy);
@@ -1188,9 +1249,9 @@ describe('jqLite', function() {
             evnt = document.createEvent('MouseEvents');
 
             var originalPreventDefault = evnt.preventDefault,
-            appWindow = window,
-            fakeProcessDefault = true,
-            finalProcessDefault;
+              appWindow = window,
+              fakeProcessDefault = true,
+              finalProcessDefault;
 
             evnt.preventDefault = function() {
               fakeProcessDefault = false;
@@ -1199,7 +1260,7 @@ describe('jqLite', function() {
 
             var x = 0, y = 0;
             evnt.initMouseEvent(type, true, true, window, 0, x, y, x, y, false, false,
-            false, false, 0, relatedTarget);
+              false, false, 0, relatedTarget);
 
             element.dispatchEvent(evnt);
           };
@@ -1226,10 +1287,10 @@ describe('jqLite', function() {
     if (_jqLiteMode) {
       it('should throw an error if eventData or a selector is passed', function() {
         var elm = jqLite(a),
-            anObj = {},
-            aString = '',
-            aValue = 45,
-            callback = function() {};
+          anObj = {},
+          aString = '',
+          aValue = 45,
+          callback = function() {};
 
         expect(function() {
           elm.on('click', anObj, callback);
@@ -1266,8 +1327,8 @@ describe('jqLite', function() {
 
     it('should deregister all listeners', function() {
       var aElem = jqLite(a),
-          clickSpy = jasmine.createSpy('click'),
-          mouseoverSpy = jasmine.createSpy('mouseover');
+        clickSpy = jasmine.createSpy('click'),
+        mouseoverSpy = jasmine.createSpy('mouseover');
 
       aElem.on('click', clickSpy);
       aElem.on('mouseover', mouseoverSpy);
@@ -1291,8 +1352,8 @@ describe('jqLite', function() {
 
     it('should deregister listeners for specific type', function() {
       var aElem = jqLite(a),
-          clickSpy = jasmine.createSpy('click'),
-          mouseoverSpy = jasmine.createSpy('mouseover');
+        clickSpy = jasmine.createSpy('click'),
+        mouseoverSpy = jasmine.createSpy('mouseover');
 
       aElem.on('click', clickSpy);
       aElem.on('mouseover', mouseoverSpy);
@@ -1322,8 +1383,8 @@ describe('jqLite', function() {
 
     it('should deregister all listeners for types separated by spaces', function() {
       var aElem = jqLite(a),
-          clickSpy = jasmine.createSpy('click'),
-          mouseoverSpy = jasmine.createSpy('mouseover');
+        clickSpy = jasmine.createSpy('click'),
+        mouseoverSpy = jasmine.createSpy('mouseover');
 
       aElem.on('click', clickSpy);
       aElem.on('mouseover', mouseoverSpy);
@@ -1347,8 +1408,8 @@ describe('jqLite', function() {
 
     it('should deregister specific listener', function() {
       var aElem = jqLite(a),
-          clickSpy1 = jasmine.createSpy('click1'),
-          clickSpy2 = jasmine.createSpy('click2');
+        clickSpy1 = jasmine.createSpy('click1'),
+        clickSpy2 = jasmine.createSpy('click2');
 
       aElem.on('click', clickSpy1);
       aElem.on('click', clickSpy2);
@@ -1376,10 +1437,10 @@ describe('jqLite', function() {
 
     it('should deregister specific listener within the listener and call subsequent listeners', function() {
       var aElem = jqLite(a),
-          clickSpy = jasmine.createSpy('click'),
-          clickOnceSpy = jasmine.createSpy('clickOnce').andCallFake(function() {
-            aElem.off('click', clickOnceSpy);
-          });
+        clickSpy = jasmine.createSpy('click'),
+        clickOnceSpy = jasmine.createSpy('clickOnce').andCallFake(function() {
+          aElem.off('click', clickOnceSpy);
+        });
 
       aElem.on('click', clickOnceSpy);
       aElem.on('click', clickSpy);
@@ -1396,8 +1457,8 @@ describe('jqLite', function() {
 
     it('should deregister specific listener for multiple types separated by spaces', function() {
       var aElem = jqLite(a),
-          masterSpy = jasmine.createSpy('master'),
-          extraSpy = jasmine.createSpy('extra');
+        masterSpy = jasmine.createSpy('master'),
+        extraSpy = jasmine.createSpy('extra');
 
       aElem.on('click', masterSpy);
       aElem.on('click', extraSpy);
@@ -1423,7 +1484,7 @@ describe('jqLite', function() {
     describe('native listener deregistration', function() {
 
       it('should deregister the native listener when all jqLite listeners for given type are gone ' +
-         'after off("eventName", listener) call',  function() {
+        'after off("eventName", listener) call',  function() {
         var aElem = jqLite(a);
         var addEventListenerSpy = spyOn(aElem[0], 'addEventListener').andCallThrough();
         var removeEventListenerSpy = spyOn(aElem[0], 'removeEventListener').andCallThrough();
@@ -1442,7 +1503,7 @@ describe('jqLite', function() {
 
 
       it('should deregister the native listener when all jqLite listeners for given type are gone ' +
-         'after off("eventName") call',  function() {
+        'after off("eventName") call',  function() {
         var aElem = jqLite(a);
         var addEventListenerSpy = spyOn(aElem[0], 'addEventListener').andCallThrough();
         var removeEventListenerSpy = spyOn(aElem[0], 'removeEventListener').andCallThrough();
@@ -1459,7 +1520,7 @@ describe('jqLite', function() {
 
 
       it('should deregister the native listener when all jqLite listeners for given type are gone ' +
-         'after off("eventName1 eventName2") call',  function() {
+        'after off("eventName1 eventName2") call',  function() {
         var aElem = jqLite(a);
         var addEventListenerSpy = spyOn(aElem[0], 'addEventListener').andCallThrough();
         var removeEventListenerSpy = spyOn(aElem[0], 'removeEventListener').andCallThrough();
@@ -1484,7 +1545,7 @@ describe('jqLite', function() {
 
 
       it('should deregister the native listener when all jqLite listeners for given type are gone ' +
-         'after off() call',  function() {
+        'after off() call',  function() {
         var aElem = jqLite(a);
         var addEventListenerSpy = spyOn(aElem[0], 'addEventListener').andCallThrough();
         var removeEventListenerSpy = spyOn(aElem[0], 'removeEventListener').andCallThrough();
@@ -1727,13 +1788,13 @@ describe('jqLite', function() {
       var root = jqLite('<div>');
       expect(root.prepend([a, b, c])).toBe(root);
       expect(sortedHtml(root)).
-        toBe('<div><div>A</div><div>B</div><div>C</div></div>');
+      toBe('<div><div>A</div><div>B</div><div>C</div></div>');
     });
     it('should prepend array to content in the right order', function() {
       var root = jqLite('<div>text</div>');
       expect(root.prepend([a, b, c])).toBe(root);
       expect(sortedHtml(root)).
-        toBe('<div><div>A</div><div>B</div><div>C</div>text</div>');
+      toBe('<div><div>A</div><div>B</div><div>C</div>text</div>');
     });
   });
 
@@ -1779,7 +1840,7 @@ describe('jqLite', function() {
   describe('parent', function() {
     it('should return parent or an empty set when no parent', function() {
       var parent = jqLite('<div><p>abc</p></div>'),
-          child = parent.find('p');
+        child = parent.find('p');
 
       expect(parent.parent()).toBeTruthy();
       expect(parent.parent().length).toEqual(0);
@@ -1799,7 +1860,7 @@ describe('jqLite', function() {
     it('should return empty jqLite object when parent is a document fragment', function() {
       //this is quite unfortunate but jQuery 1.5.1 behaves this way
       var fragment = document.createDocumentFragment(),
-          child = jqLite('<p>foo</p>');
+        child = jqLite('<p>foo</p>');
 
       fragment.appendChild(child[0]);
       expect(child[0].parentNode).toBe(fragment);
@@ -1855,9 +1916,9 @@ describe('jqLite', function() {
   describe('triggerHandler', function() {
     it('should trigger all registered handlers for an event', function() {
       var element = jqLite('<span>poke</span>'),
-          pokeSpy = jasmine.createSpy('poke'),
-          clickSpy1 = jasmine.createSpy('clickSpy1'),
-          clickSpy2 = jasmine.createSpy('clickSpy2');
+        pokeSpy = jasmine.createSpy('poke'),
+        clickSpy1 = jasmine.createSpy('clickSpy1'),
+        clickSpy2 = jasmine.createSpy('clickSpy2');
 
       element.on('poke', pokeSpy);
       element.on('click', clickSpy1);
@@ -1882,8 +1943,8 @@ describe('jqLite', function() {
       // all anchors with no href automatically
 
       var element = jqLite('<a>poke</a>'),
-          pokeSpy = jasmine.createSpy('poke'),
-          event;
+        pokeSpy = jasmine.createSpy('poke'),
+        event;
 
       element.on('click', pokeSpy);
 
@@ -1896,8 +1957,8 @@ describe('jqLite', function() {
 
     it('should pass extra parameters as an additional argument', function() {
       var element = jqLite('<a>poke</a>'),
-          pokeSpy = jasmine.createSpy('poke'),
-          data;
+        pokeSpy = jasmine.createSpy('poke'),
+        data;
 
       element.on('click', pokeSpy);
 
@@ -1908,8 +1969,8 @@ describe('jqLite', function() {
 
     it('should mark event as prevented if preventDefault is called', function() {
       var element = jqLite('<a>poke</a>'),
-          pokeSpy = jasmine.createSpy('poke'),
-          event;
+        pokeSpy = jasmine.createSpy('poke'),
+        event;
 
       element.on('click', pokeSpy);
       element.triggerHandler('click');
@@ -1922,10 +1983,10 @@ describe('jqLite', function() {
 
     it('should support handlers that deregister themselves', function() {
       var element = jqLite('<a>poke</a>'),
-          clickSpy = jasmine.createSpy('click'),
-          clickOnceSpy = jasmine.createSpy('clickOnce').andCallFake(function() {
-            element.off('click', clickOnceSpy);
-          });
+        clickSpy = jasmine.createSpy('click'),
+        clickOnceSpy = jasmine.createSpy('clickOnce').andCallFake(function() {
+          element.off('click', clickOnceSpy);
+        });
 
       element.on('click', clickOnceSpy);
       element.on('click', clickSpy);
@@ -1941,12 +2002,12 @@ describe('jqLite', function() {
 
     it("should accept a custom event instead of eventName", function() {
       var element = jqLite('<a>poke</a>'),
-          pokeSpy = jasmine.createSpy('poke'),
-          customEvent = {
-            type: 'click',
-            someProp: 'someValue'
-          },
-          actualEvent;
+        pokeSpy = jasmine.createSpy('poke'),
+        customEvent = {
+          type: 'click',
+          someProp: 'someValue'
+        },
+        actualEvent;
 
       element.on('click', pokeSpy);
       element.triggerHandler(customEvent);
@@ -1959,9 +2020,9 @@ describe('jqLite', function() {
 
     it('should stop triggering handlers when stopImmediatePropagation is called', function() {
       var element = jqLite(a),
-          clickSpy1 = jasmine.createSpy('clickSpy1'),
-          clickSpy2 = jasmine.createSpy('clickSpy2').andCallFake(function(event) { event.stopImmediatePropagation(); }),
-          clickSpy3 = jasmine.createSpy('clickSpy3');
+        clickSpy1 = jasmine.createSpy('clickSpy1'),
+        clickSpy2 = jasmine.createSpy('clickSpy2').andCallFake(function(event) { event.stopImmediatePropagation(); }),
+        clickSpy3 = jasmine.createSpy('clickSpy3');
 
       element.on('click', clickSpy1);
       element.on('click', clickSpy2);
@@ -1976,8 +2037,8 @@ describe('jqLite', function() {
 
     it('should have event.isImmediatePropagationStopped method', function() {
       var element = jqLite(a),
-          clickSpy = jasmine.createSpy('clickSpy'),
-          event;
+        clickSpy = jasmine.createSpy('clickSpy'),
+        event;
 
       element.on('click', clickSpy);
       element.triggerHandler('click');

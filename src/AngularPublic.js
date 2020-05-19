@@ -142,7 +142,8 @@ function publishExternalAPI(angular) {
     'getTestability': getTestability,
     '$$minErr': minErr,
     '$$csp': csp,
-    'reloadWithDebugInfo': reloadWithDebugInfo
+    'reloadWithDebugInfo': reloadWithDebugInfo,
+    'UNSAFE_restoreLegacyJqLiteXHTMLReplacement': UNSAFE_restoreLegacyJqLiteXHTMLReplacement
   });
 
   angularModule = setupModuleLoader(window);
