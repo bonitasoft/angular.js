@@ -1,5 +1,6 @@
 {
-  "extends": "../.jshintrc-base",
+  "root": true,
+  "extends": "../.eslintrc-browser.json",
   "browser": true,
   "globals": {
     /* auto/injector.js */
@@ -14,6 +15,9 @@
     "splice": false,
     "push": false,
     "toString": false,
+    "minErrConfig": false,
+    "errorHandlingConfig": false,
+    "isValidObjectMaxDepth": false,
     "ngMinErr": false,
     "_angular": false,
     "angularModule": false,
@@ -36,6 +40,7 @@
     "extend": false,
     "int": false,
     "inherit": false,
+    "merge": false,
     "noop": false,
     "identity": false,
     "valueFn": false,
@@ -44,7 +49,9 @@
     "isObject": false,
     "isString": false,
     "isNumber": false,
+    "isNumberNaN": false,
     "isDate": false,
+    "isError": false,
     "isArray": false,
     "isFunction": false,
     "isRegExp": false,
@@ -55,6 +62,7 @@
     "isBlob": false,
     "isBoolean": false,
     "isPromiseLike": false,
+    "hasCustomToString": false,
     "trim": false,
     "escapeForRegexp": false,
     "isElement": false,
@@ -63,6 +71,7 @@
     "arrayRemove": false,
     "copy": false,
     "shallowCopy": false,
+    "simpleCompare": false,
     "equals": false,
     "csp": false,
     "concat": false,
@@ -71,6 +80,9 @@
     "toJsonReplacer": false,
     "toJson": false,
     "fromJson": false,
+    "addDateMinutes": false,
+    "convertTimezoneToLocal": false,
+    "timezoneToOffset": false,
     "startingTag": false,
     "tryDecodeURIComponent": false,
     "parseKeyValue": false,
@@ -90,8 +102,9 @@
     "createMap": false,
     "VALIDITY_STATE_PROPERTY": false,
     "reloadWithDebugInfo": false,
-
+    "stringify": false,
     "skipDestroyOnNextJQueryCleanData": true,
+    "UNSAFE_restoreLegacyJqLiteXHTMLReplacement": false,
 
     "NODE_TYPE_ELEMENT": false,
     "NODE_TYPE_ATTRIBUTE": false,
@@ -121,6 +134,7 @@
     "ALIASED_ATTR": false,
     "jqNextId": false,
     "camelCase": false,
+    "fnCamelCaseReplace": false,
     "jqLitePatchJQueryRemove": false,
     "JQLite": false,
     "jqLiteClone": false,
@@ -137,6 +151,7 @@
     "jqLiteInheritedData": false,
     "jqLiteBuildFragment": false,
     "jqLiteParseHTML": false,
+    "jqLiteWrapNode": false,
     "getBooleanAttrName": false,
     "getAliasedAttrName": false,
     "createEventHandler": false,
@@ -149,10 +164,16 @@
     /* apis.js */
     "hashKey": false,
     "HashMap": false,
+    "NgMap": false,
 
     /* urlUtils.js */
     "urlResolve": false,
     "urlIsSameOrigin": false,
+    "urlIsSameOriginAsBaseUrl": false,
+    "urlIsAllowedOriginFactory": false,
+
+    /* ng/controller.js */
+    "identifierForController": false,
 
     /* ng/compile.js */
     "directiveNormalize": false,
@@ -160,8 +181,17 @@
     /* ng/parse.js */
     "setter": false,
 
+    /* ng/q.js */
+    "markQExceptionHandled": false,
+
+    /* sce.js */
+    "SCE_CONTEXTS": false,
+
     /* ng/directive/directives.js */
     "ngDirective": false,
+
+    /* ng/directive/ngEventDirs.js */
+    "createEventDirective": false,
 
     /* ng/directive/input.js */
     "VALID_CLASS": false,
