@@ -16,6 +16,9 @@ _main();
 // Functions - Definitions
 function _main() {
   process.chdir(PROJECT_ROOT);
+  if (!fs.existsSync(NODE_MODULES_DIR)) {
+    fs.mkdirSync(NODE_MODULES_DIR);
+  }
   copyFile(NPM_SHRINKWRAP_FILE, NPM_SHRINKWRAP_CACHED_FILE, onCopied);
 }
 
@@ -53,7 +56,7 @@ function onCopied(err) {
 
     console.error(separator);
     console.error(
-        'Failed to copy `' + NPM_SHRINKWRAP_FILE + '` to `' + NPM_SHRINKWRAP_CACHED_FILE + '`:');
+      'Failed to copy `' + NPM_SHRINKWRAP_FILE + '` to `' + NPM_SHRINKWRAP_CACHED_FILE + '`:');
     console.error(err);
     console.error(separator);
   }
