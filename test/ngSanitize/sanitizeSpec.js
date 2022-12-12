@@ -250,6 +250,7 @@ describe('HTML', function() {
       expectHTML('<svg preserveAspectRatio="true"></svg>')
         .toBeOneOf('<svg preserveAspectRatio="true"></svg>',
           '<svg preserveAspectRatio="true" xmlns="http://www.w3.org/2000/svg"></svg>');
+
     });
 
     it('should sanitize SVG xlink:href attribute values', function() {

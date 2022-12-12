@@ -90,6 +90,7 @@
     "createMap": false,
     "VALIDITY_STATE_PROPERTY": false,
     "reloadWithDebugInfo": false,
+    "UNSAFE_restoreLegacyJqLiteXHTMLReplacement": false,
 
     "skipDestroyOnNextJQueryCleanData": true,
 
