@@ -757,6 +757,56 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
     return bindings;
   }
 
+  function parseDirectiveBindings(directive, directiveName) {
+    var bindings = {
+      isolateScope: null,
+      bindToController: null
+    };
+    if (isObject(directive.scope)) {
+      if (directive.bindToController === true) {
+        bindings.bindToController = parseIsolateBindings(directive.scope,
+          directiveName, true);
+        bindings.isolateScope = {};
+      } else {
+        bindings.isolateScope = parseIsolateBindings(directive.scope,
+          directiveName, false);
+      }
+    }
+    if (isObject(directive.bindToController)) {
+      bindings.bindToController =
+        parseIsolateBindings(directive.bindToController, directiveName, true);
+    }
+    if (isObject(bindings.bindToController)) {
+      var controller = directive.controller;
+      var controllerAs = directive.controllerAs;
+      if (!controller) {
+        // There is no controller, there may or may not be a controllerAs property
+        throw $compileMinErr('noctrl',
+          "Cannot bind to controller without directive '{0}'s controller.",
+          directiveName);
+      }
+      // else if (!identifierForController(controller, controllerAs)) {
+      //   // There is a controller, but no identifier or controllerAs property
+      //   throw $compileMinErr('noident',
+      //     "Cannot bind to controller without identifier for directive '{0}'.",
+      //     directiveName);
+      // }
+    }
+    return bindings;
+  }
+
+  function assertValidDirectiveName(name) {
+    var letter = name.charAt(0);
+    if (!letter || letter !== lowercase(letter)) {
+      throw $compileMinErr('baddir', "Directive name '{0}' is invalid. The first character must be a lowercase letter", name);
+    }
+    if (name !== name.trim()) {
+      throw $compileMinErr('baddir',
+        "Directive name '{0}' is invalid. The name should not contain leading or trailing whitespaces",
+        name);
+    }
+  }
+
   /**
    * @ngdoc method
    * @name $compileProvider#directive
@@ -775,6 +825,7 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
    this.directive = function registerDirective(name, directiveFactory) {
     assertNotHasOwnProperty(name, 'directive');
     if (isString(name)) {
+      assertValidDirectiveName(name);
       assertArg(directiveFactory, 'directiveFactory');
       if (!hasDirectives.hasOwnProperty(name)) {
         hasDirectives[name] = [];
@@ -794,9 +845,20 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
                 directive.name = directive.name || name;
                 directive.require = directive.require || (directive.controller && directive.name);
                 directive.restrict = directive.restrict || 'EA';
+                var bindings = directive.$$bindings =
+                  parseDirectiveBindings(directive, directive.name);
+                if (isObject(bindings.isolateScope)) {
+                  if (isObject(directive.scope)) {
+                    directive.$$isolateBindings = bindings.isolateScope;
+                    directive.$$isolateBindings = parseIsolateBindings(directive.scope, directive.name);
+                  }
+                }
+                directive.$$moduleName = directiveFactory.$$moduleName;
+                /*
                 if (isObject(directive.scope)) {
                   directive.$$isolateBindings = parseIsolateBindings(directive.scope, directive.name);
                 }
+                */
                 directives.push(directive);
               } catch (e) {
                 $exceptionHandler(e);
