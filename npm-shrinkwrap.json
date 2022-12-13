@@ -7,39 +7,39 @@
       "name": "angularjs",
       "hasInstallScript": true,
       "devDependencies": {
-        "angular-benchpress": "0.x.x",
-        "benchmark": "1.x.x",
-        "bower": "~1.3.9",
-        "browserstacktunnel-wrapper": "~1.3.1",
+        "angular-benchpress": "0.2.2",
+        "benchmark": "1.0.0",
+        "bower": "1.3.12",
+        "browserstacktunnel-wrapper": "1.3.1",
         "canonical-path": "0.0.2",
-        "cheerio": "^0.17.0",
-        "dgeni": "^0.4.0",
-        "dgeni-packages": "^0.10.0",
-        "event-stream": "~3.1.0",
-        "glob": "^6.0.1",
-        "grunt": "~0.4.2",
-        "grunt-bump": "~0.0.13",
-        "grunt-contrib-clean": "~0.6.0",
-        "grunt-contrib-compress": "~0.12.0",
-        "grunt-contrib-connect": "~0.8.0",
-        "grunt-contrib-copy": "~0.6.0",
-        "grunt-contrib-jshint": "~0.10.0",
-        "grunt-ddescribe-iit": "~0.0.1",
+        "cheerio": "0.17.0",
+        "dgeni": "0.4.1",
+        "dgeni-packages": "0.10.17",
+        "event-stream": "3.1.7",
+        "glob": "6.0.1",
+        "grunt": "^0.4.5",
+        "grunt-bump": "0.0.17",
+        "grunt-contrib-clean": "0.6.0",
+        "grunt-contrib-compress": "0.12.0",
+        "grunt-contrib-connect": "0.8.0",
+        "grunt-contrib-copy": "0.6.0",
+        "grunt-contrib-jshint": "0.10.0",
+        "grunt-ddescribe-iit": "0.0.6",
         "grunt-jasmine-node": "0.3.1",
-        "grunt-jscs": "~1.2.0",
-        "grunt-merge-conflict": "~0.0.1",
-        "grunt-shell": "~1.1.1",
-        "gulp": "~3.8.0",
-        "gulp-concat": "^2.4.1",
+        "grunt-jscs": "1.2.0",
+        "grunt-merge-conflict": "0.0.2",
+        "grunt-shell": "1.1.2",
+        "gulp": "3.8.11",
+        "gulp-concat": "2.5.2",
         "gulp-foreach": "0.0.1",
-        "gulp-jshint": "~1.4.2",
-        "gulp-rename": "^1.2.0",
-        "gulp-sourcemaps": "^1.2.2",
-        "gulp-uglify": "^1.0.1",
-        "gulp-util": "^3.0.1",
-        "jasmine-node": "~1.14.5",
-        "jasmine-reporters": "~1.0.1",
-        "jshint-stylish": "~1.0.0",
+        "gulp-jshint": "1.4.2",
+        "gulp-rename": "1.2.2",
+        "gulp-sourcemaps": "1.5.1",
+        "gulp-uglify": "1.1.0",
+        "gulp-util": "3.0.4",
+        "jasmine-node": "1.14.5",
+        "jasmine-reporters": "1.0.1",
+        "jshint-stylish": "1.0.1",
         "karma": "0.12.32",
         "karma-browserstack-launcher": "0.1.2",
         "karma-chrome-launcher": "0.1.5",
@@ -49,25 +49,31 @@
         "karma-ng-scenario": "0.1.0",
         "karma-sauce-launcher": "0.2.10",
         "karma-script-launcher": "0.1.0",
-        "load-grunt-tasks": "~0.6.0",
-        "lodash": "~2.4.1",
-        "marked": "~0.3.0",
+        "load-grunt-tasks": "0.6.0",
+        "lodash": "2.4.1",
+        "marked": "0.3.2",
         "node-html-encoder": "0.0.2",
-        "promises-aplus-tests": "~2.1.0",
-        "protractor": "^2.0.0",
-        "q": "~1.0.0",
-        "q-io": "^1.10.9",
-        "qq": "^0.3.5",
-        "rewire": "~2.1.0",
-        "semver": "~4.0.3",
-        "shelljs": "~0.3.0",
-        "sorted-object": "^1.0.0",
-        "stringmap": "^0.2.2"
+        "promises-aplus-tests": "2.1.0",
+        "protractor": "2.5.1",
+        "q": "1.0.1",
+        "q-io": "1.12.0",
+        "qq": "0.3.5",
+        "rewire": "2.1.5",
+        "semver": "4.0.3",
+        "shelljs": "0.3.0",
+        "sorted-object": "1.0.0",
+        "stringmap": "0.2.2"
       },
       "engines": {
         "node": "~0.10",
         "npm": "~2.5"
       }
+    },
+    "node_modules/abbrev": {
+      "version": "1.1.1",
+      "resolved": "https://registry.npmjs.org/abbrev/-/abbrev-1.1.1.tgz",
+      "integrity": "sha512-nne9/IiQ/hzIhY6pdDnbBtz7DjPTKrY00P/zvPSm5pOFkl6xuGrGnXn/VtTNNfNtAfZ9/1RtehkszU9qcTii0Q==",
+      "dev": true
     },
     "node_modules/angular-benchpress": {
       "version": "0.2.2",
@@ -5503,16 +5509,6 @@
       "integrity": "sha512-8nWq2nLTAwd02jTqJExUYFSD/fKq6VH9Y/oG2accc/kdI0V98Bag8d5a4gi3XHz73rDWa2PvTtvcWYquKqSENA==",
       "dev": true
     },
-    "node_modules/bower/node_modules/update-notifier/node_modules/latest-version/node_modules/package-json/node_modules/registry-url/node_modules/npmconf/node_modules/ini": {
-      "version": "1.3.3",
-      "resolved": "https://registry.npmjs.org/ini/-/ini-1.3.3.tgz",
-      "integrity": "sha512-Qp/z/qr17safqtf5pLnFkZrNxPjmp8zWjE4o1P1+QnMI6APlzdbmOiszIUJDeOupOI4jf65cRJNFcOFaumhTlw==",
-      "deprecated": "Please update to ini >=1.3.6 to avoid a prototype pollution issue",
-      "dev": true,
-      "engines": {
-        "node": "*"
-      }
-    },
     "node_modules/bower/node_modules/update-notifier/node_modules/latest-version/node_modules/package-json/node_modules/registry-url/node_modules/npmconf/node_modules/once": {
       "version": "1.3.1",
       "resolved": "https://registry.npmjs.org/once/-/once-1.3.1.tgz",
@@ -7394,6 +7390,12 @@
       "version": "2.3.6",
       "resolved": "https://registry.npmjs.org/through/-/through-2.3.6.tgz",
       "integrity": "sha512-E8QCeJDd4xmHkGNnpBVZVgJxtziZg7T1dehN+QAD4pYy/D39FtmFu31qBtNc1aCwY2Y5++ZaGAd7Yf+NG/q1jw==",
+      "dev": true
+    },
+    "node_modules/extend": {
+      "version": "3.0.2",
+      "resolved": "https://registry.npmjs.org/extend/-/extend-3.0.2.tgz",
+      "integrity": "sha512-fjquC59cD7CyW6urNXK0FBufkZcoiGG80wTuPujX590cB5Ttln20E2UB4S/WARVqhXffZl2LNgS+gQdPIIim/g==",
       "dev": true
     },
     "node_modules/glob": {
@@ -9833,12 +9835,6 @@
       "engines": {
         "node": "*"
       }
-    },
-    "node_modules/grunt/node_modules/nopt/node_modules/abbrev": {
-      "version": "1.0.5",
-      "resolved": "https://registry.npmjs.org/abbrev/-/abbrev-1.0.5.tgz",
-      "integrity": "sha512-Sg+CLYf4W/aL/aN6jF7KJ7U8NLK0Dlewx93tRLjB2G6MPlqwWJYN+pypKISr0sbzIfSJVCkn6tYlgKBM41RYpA==",
-      "dev": true
     },
     "node_modules/grunt/node_modules/rimraf": {
       "version": "2.2.8",
@@ -13392,6 +13388,12 @@
       "version": "0.0.1",
       "resolved": "https://registry.npmjs.org/clone-stats/-/clone-stats-0.0.1.tgz",
       "integrity": "sha512-dhUqc57gSMCo6TX85FLfe51eC/s+Im2MLkAgJwfaRRexR2tA4dd3eLEW4L6efzHc2iNorrRRXITifnDLlRrhaA==",
+      "dev": true
+    },
+    "node_modules/ini": {
+      "version": "1.3.8",
+      "resolved": "https://registry.npmjs.org/ini/-/ini-1.3.8.tgz",
+      "integrity": "sha512-JV/yugV2uzW5iMRSiZAyDtQd+nxtUnjeLt0acNdw98kKLrvuRVyB80tsREOE7yvGVgalhZ6RNXCmEHkUKBKxew==",
       "dev": true
     },
     "node_modules/jasmine-node": {
@@ -16996,9 +16998,9 @@
       ]
     },
     "node_modules/marked": {
-      "version": "0.3.3",
-      "resolved": "https://registry.npmjs.org/marked/-/marked-0.3.3.tgz",
-      "integrity": "sha512-CPwdPujruZQxySbnsiSBZkf2MhbK7s1zbJRpJQ5i1lG8Gpj4WOXMWxVA9djtce2wSpHl1wZVH7sujTCVqhkr+w==",
+      "version": "0.3.2",
+      "resolved": "https://registry.npmjs.org/marked/-/marked-0.3.2.tgz",
+      "integrity": "sha512-Wvq6b3iV2F03cdF0FdXNNQSGAWAcrSW/RjHeMWyHr/zR8MWtmTKNEkgA8VfPdpu8EiGuFgxCPgVxJgBZoPCpAQ==",
       "dev": true,
       "bin": {
         "marked": "bin/marked"
@@ -18032,12 +18034,6 @@
       "version": "0.7.1",
       "resolved": "https://registry.npmjs.org/ms/-/ms-0.7.1.tgz",
       "integrity": "sha512-lRLiIR9fSNpnP6TC4v8+4OU7oStC01esuNowdQ34L+Gk8e5Puoc88IqJ+XAY/B3Mn2ZKis8l8HX90oU8ivzUHg==",
-      "dev": true
-    },
-    "node_modules/protractor/node_modules/saucelabs/node_modules/https-proxy-agent/node_modules/extend": {
-      "version": "3.0.0",
-      "resolved": "https://registry.npmjs.org/extend/-/extend-3.0.0.tgz",
-      "integrity": "sha512-5mYyg57hpD+sFaJmgNL9BidQ5C7dmJE3U5vzlRWbuqG+8dytvYEoxvKs6Tj5cm3LpMsFvRt20qz1ckezmsOUgQ==",
       "dev": true
     },
     "node_modules/protractor/node_modules/selenium-webdriver": {
