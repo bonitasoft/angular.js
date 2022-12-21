@@ -30,6 +30,7 @@
   extend: true,
   int: true,
   inherit: true,
+  merge: true,
   noop: true,
   identity: true,
   valueFn: true,
@@ -327,6 +328,41 @@ function setHashKey(obj, h) {
   }
 }
 
+
+function baseExtend(dst, objs, deep) {
+  var h = dst.$$hashKey;
+  for (var i = 0, ii = objs.length; i < ii; ++i) {
+    var obj = objs[i];
+    if (!isObject(obj) && !isFunction(obj)) continue;
+    var keys = Object.keys(obj);
+    for (var j = 0, jj = keys.length; j < jj; j++) {
+      var key = keys[j];
+      var src = obj[key];
+      if (deep && isObject(src)) {
+        if (isDate(src)) {
+          dst[key] = new Date(src.valueOf());
+        } else if (isRegExp(src)) {
+          dst[key] = new RegExp(src);
+        } else if (src.nodeName) {
+          dst[key] = src.cloneNode(true);
+        } else if (isElement(src)) {
+          dst[key] = src.clone();
+        } else {
+          if (key !== '__proto__') {
+            if (!isObject(dst[key])) dst[key] = isArray(src) ? [] : {};
+            baseExtend(dst[key], [src], true);
+          }
+        }
+      } else {
+        dst[key] = src;
+      }
+    }
+  }
+
+  setHashKey(dst, h);
+  return dst;
+}
+
 /**
  * @ngdoc function
  * @name angular.extend
@@ -344,21 +380,29 @@ function setHashKey(obj, h) {
  * @returns {Object} Reference to `dst`.
  */
 function extend(dst) {
-  var h = dst.$$hashKey;
+  return baseExtend(dst, slice.call(arguments, 1), false);
+}
 
-  for (var i = 1, ii = arguments.length; i < ii; i++) {
-    var obj = arguments[i];
-    if (obj) {
-      var keys = Object.keys(obj);
-      for (var j = 0, jj = keys.length; j < jj; j++) {
-        var key = keys[j];
-        dst[key] = obj[key];
-      }
-    }
-  }
-
-  setHashKey(dst, h);
-  return dst;
+/**
+ * @ngdoc function
+ * @name angular.merge
+ * @module ng
+ * @kind function
+ *
+ * @description
+ * Deeply extends the destination object `dst` by copying own enumerable properties from the `src` object(s)
+ * to `dst`. You can specify multiple `src` objects. If you want to preserve original objects, you can do so
+ * by passing an empty object as the target: `var object = angular.merge({}, object1, object2)`.
+ *
+ * Unlike {@link angular.extend extend()}, `merge()` recursively descends into object properties of source
+ * objects, performing a deep copy.
+ *
+ * @param {Object} dst Destination object.
+ * @param {...Object} src Source object(s).
+ * @returns {Object} Reference to `dst`.
+ */
+function merge(dst) {
+  return baseExtend(dst, slice.call(arguments, 1), true);
 }
 
 function int(str) {
