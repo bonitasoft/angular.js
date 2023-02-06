@@ -112,33 +112,47 @@ var $sanitizeMinErr = angular.$$minErr('$sanitize');
    </file>
    <file name="protractor.js" type="protractor">
      it('should sanitize the html snippet by default', function() {
-       expect(element(by.css('#bind-html-with-sanitize div')).getInnerHtml()).
-         toBe('<p>an html\n<em>click here</em>\nsnippet</p>');
+       var htmlComment = browser.executeScript("return arguments[0].innerHTML;", element(by.css('#bind-html-with-sanitize div')));
+       htmlComment.then(function (value){
+          expect(value).toBe('<p>an html\n<em>click here</em>\nsnippet</p>');
+       });
      });
 
      it('should inline raw snippet if bound to a trusted value', function() {
-       expect(element(by.css('#bind-html-with-trust div')).getInnerHtml()).
-         toBe("<p style=\"color:blue\">an html\n" +
-              "<em onmouseover=\"this.textContent='PWN3D!'\">click here</em>\n" +
-              "snippet</p>");
+        var htmlComment = browser.executeScript("return arguments[0].innerHTML;", element(by.css('#bind-html-with-trust div')));
+        htmlComment.then(function (value){
+          expect(value).toBe("<p style=\"color:blue\">an html\n" +
+            "<em onmouseover=\"this.textContent='PWN3D!'\">click here</em>\n" +
+            "snippet</p>");
+        });
      });
 
      it('should escape snippet without any filter', function() {
-       expect(element(by.css('#bind-default div')).getInnerHtml()).
-         toBe("&lt;p style=\"color:blue\"&gt;an html\n" +
-              "&lt;em onmouseover=\"this.textContent='PWN3D!'\"&gt;click here&lt;/em&gt;\n" +
-              "snippet&lt;/p&gt;");
+       var htmlComment = browser.executeScript("return arguments[0].innerHTML;", element(by.css('#bind-default div')));
+       htmlComment.then(function (value){
+          expect(value).toBe("&lt;p style=\"color:blue\"&gt;an html\n" +
+            "&lt;em onmouseover=\"this.textContent='PWN3D!'\"&gt;click here&lt;/em&gt;\n" +
+            "snippet&lt;/p&gt;");
+       });
      });
 
      it('should update', function() {
        element(by.model('snippet')).clear();
        element(by.model('snippet')).sendKeys('new <b onclick="alert(1)">text</b>');
-       expect(element(by.css('#bind-html-with-sanitize div')).getInnerHtml()).
-         toBe('new <b>text</b>');
-       expect(element(by.css('#bind-html-with-trust div')).getInnerHtml()).toBe(
-         'new <b onclick="alert(1)">text</b>');
-       expect(element(by.css('#bind-default div')).getInnerHtml()).toBe(
-         "new &lt;b onclick=\"alert(1)\"&gt;text&lt;/b&gt;");
+       var htmlComment0 = browser.executeScript("return arguments[0].innerHTML;", element(by.css('#bind-html-with-sanitize div')));
+       htmlComment0.then(function (value){
+        expect(value).toBe('new <b>text</b>');
+       });
+
+       var htmlComment1 = browser.executeScript("return arguments[0].innerHTML;", element(by.css('#bind-html-with-trust div')));
+       htmlComment1.then(function (value){
+        expect(value).toBe('new <b onclick="alert(1)">text</b>');
+       });
+
+       var htmlComment2 = browser.executeScript("return arguments[0].innerHTML;", element(by.css('#bind-default div')));
+       htmlComment2.then(function (value){
+        expect(value).toBe("new &lt;b onclick=\"alert(1)\"&gt;text&lt;/b&gt;");
+       });
      });
    </file>
    </example>

@@ -29,7 +29,7 @@ describe("doc.angularjs.org", function() {
       // Ensure that the page is loaded before trying to switch frames.
       browser.waitForAngular();
 
-      browser.switchTo().frame('example-input-directive');
+      browser.switchTo().frame(0).then();
 
       var nameInput = element(by.model('user.name'));
       nameInput.sendKeys('!!!');

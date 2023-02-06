@@ -625,14 +625,18 @@ function $SceDelegateProvider() {
  * <file name="protractor.js" type="protractor">
  *   describe('SCE doc demo', function() {
  *     it('should sanitize untrusted values', function() {
- *       expect(element.all(by.css('.htmlComment')).first().getInnerHtml())
- *           .toBe('<span>Is <i>anyone</i> reading this?</span>');
+ *      var htmlComment = browser.executeScript("return arguments[0].innerHTML;", element.all(by.css('.htmlComment')).first());
+ *       htmlComment.then(function (value){
+ *       expect(value).toBe('<span>Is <i>anyone</i> reading this?</span>');
+ *     });
  *     });
  *
  *     it('should NOT sanitize explicitly trusted values', function() {
- *       expect(element(by.id('explicitlyTrustedHtml')).getInnerHtml()).toBe(
- *           '<span onmouseover="this.textContent=&quot;Explicitly trusted HTML bypasses ' +
- *           'sanitization.&quot;">Hover over this text.</span>');
+ *       var htmlComment = browser.executeScript("return arguments[0].innerHTML;", element(by.id('explicitlyTrustedHtml')));
+ *       htmlComment.then(function (value){
+ *       expect(value).toBe('<span onmouseover="this.textContent=&quot;Explicitly trusted HTML bypasses ' +
+ *         'sanitization.&quot;">Hover over this text.</span>');
+ *       });
  *     });
  *   });
  * </file>

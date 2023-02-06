@@ -8,7 +8,7 @@ var path = require('path');
 var PROJECT_ROOT = path.join(__dirname, '../../');
 var NODE_MODULES_DIR = 'node_modules';
 var NPM_SHRINKWRAP_FILE = 'npm-shrinkwrap.json';
-var NPM_SHRINKWRAP_CACHED_FILE = NODE_MODULES_DIR + '/npm-shrinkwrap.cached.json';
+var NPM_SHRINKWRAP_CACHED_FILE = 'npm-shrinkwrap.cached.json';
 
 // Run
 _main();

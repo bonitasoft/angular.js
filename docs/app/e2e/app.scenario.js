@@ -1,6 +1,7 @@
 'use strict';
 
-var webdriver = require('protractor/node_modules/selenium-webdriver');
+var webdriver = require('selenium-webdriver');
+// protractor/node_modules/selenium-webdriver
 
 describe('docs.angularjs.org', function () {
 
