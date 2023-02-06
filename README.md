@@ -1,49 +1,6 @@
+
 AngularJS
 =========
-
-Fork from angularjs for Bonitasoft.
-
-To make branch 1.3.x working, we need to:
-
-* git checkout 1.3.x
-* nvm install 6.17.1
-
-1. node module not exist https://github.com/angular/angular.js/issues/13123
-
-Dans copy-npm-shrinkwrap.js
-Remplacer la fonction main
-
-function _main() {
-  process.chdir(PROJECT_ROOT);
-  if (!fs.existsSync(NODE_MODULES_DIR)) {
-    fs.mkdirSync(NODE_MODULES_DIR);
-  }
-  copyFile(NPM_SHRINKWRAP_FILE, NPM_SHRINKWRAP_CACHED_FILE, onCopied);
-}
-
-2. npm install -g grunt-cli@0.1.13
-pour pouvoir lancer grunt package
-
-3. Installer python2.7.18
-https://tecadmin.net/install-python-2-7-on-ubuntu-and-linuxmint/
-
-4. grunt package =>
-Error: Could not create the Java Virtual Machine.
-Error: A fatal exception has occurred. Program will exit.
-Unrecognized option: -d32
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 AngularJS lets you write client-side web applications as if you had a smarter browser.  It lets you
 use good old HTML (or HAML, Jade and friends!) as your template language and lets you extend HTML’s
@@ -64,14 +21,32 @@ piece of cake. Best of all?? It makes development fun!
 * Dashboard: http://dashboard.angularjs.org
 
 Building AngularJS
----------
+=========
 [Once you have your environment setup](http://docs.angularjs.org/misc/contribute) just run:
 
     grunt package
 
+Building AngularJS v1.3.x
+=========
+
+Fork from angularjs for Bonitasoft.
+To make branch v1.3.x working, we need to:
+
+1. Git checkout v1.3.x
+
+2. Install node version 16.10.0 (with npm version 7.24.0)
+
+3. Install tools and dependencies
+   - Run: npm install -g grunt-cli@0.1.13
+   - Install python2.7.18 (https://tecadmin.net/install-python-2-7-on-ubuntu-and-linuxmint/)
+   - Run: npm i
+
+4. Build Project
+   - Run: grunt package
+
 
 Running Tests
--------------
+=========
 To execute all unit tests, use:
 
     grunt test:unit

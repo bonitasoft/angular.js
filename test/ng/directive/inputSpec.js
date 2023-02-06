@@ -915,7 +915,7 @@ describe('input', function() {
         $rootScope.halfSecondToNextYear = new Date(2013, 11, 31, 23, 59, 59, 500);
       });
 
-      expect(inputElm.val()).toBe('2013-12-31T23:59:59.500');
+      expect(inputElm.val()).toBe('2013-12-31T23:59:59.5');
     });
 
 
@@ -926,7 +926,7 @@ describe('input', function() {
         $rootScope.breakMe = new Date(2009, 0, 6, 16, 25, 0);
       });
 
-      expect(inputElm.val()).toBe('2009-01-06T16:25:00.000');
+      expect(inputElm.val()).toBe('2009-01-06T16:25');
 
       try {
         //set to text for browsers with datetime-local validation.
@@ -986,7 +986,7 @@ describe('input', function() {
       $rootScope.$apply(function() {
         $rootScope.value = new Date(Date.UTC(2001, 0, 1, 1, 2, 0));
       });
-      expect(inputElm.val()).toBe('2001-01-01T01:02:00.000');
+      expect(inputElm.val()).toBe('2001-01-01T01:02');
     });
 
 
@@ -1015,7 +1015,7 @@ describe('input', function() {
       $rootScope.$apply(function() {
         $rootScope.value = new Date(2001, 0, 1, 1, 2, 3);
       });
-      expect(inputElm.val()).toBe('2001-01-01T01:02:03.000');
+      expect(inputElm.val()).toBe('2001-01-01T01:02:03');
     });
 
 
