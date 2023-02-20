@@ -10,6 +10,9 @@ config.specs = [
 
 config.capabilities = {
   browserName: 'chrome',
+  chromeOptions: {
+    args: ['--no-sandbox']
+  }
 };
 
 exports.config = config;
