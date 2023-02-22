@@ -27,10 +27,11 @@ jobs:
         run: |
           npm install -g grunt-cli@0.1.13
           npm i
+          grunt package
       - name: Tests
         run: |
-          npm run test:app -- --watch=false --browsers=ChromeHeadless
-          npm run e2e -- --watch=false --browsers=ChromeHeadless
+          grunt test:unit
+          grunt test:e2e
       - name: Release
         run: |
           bash ${GITHUB_WORKSPACE}/scripts/github-actions/release.sh --git-push-dryrun=false --version-number=${{ github.event.inputs.version }} --version-name=${{ github.event.inputs.versionName }}
