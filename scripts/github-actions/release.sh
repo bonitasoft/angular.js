@@ -34,6 +34,8 @@ function build {
   npm install --no-color
   grunt package --no-color
 
+  ./check-size.sh
+
   cd $SCRIPT_DIR
 }
 
