@@ -31,7 +31,7 @@ function prepare {
   # clone repos
   #
   echo "-- Cloning bower-angular"
-  git clone https://github.com/bonitasoft/bower-angular.git $TMP_DIR/bower-angular
+  git clone git@github.com:angular/bower-angular.git $TMP_DIR/bower-angular
 
 
   #
