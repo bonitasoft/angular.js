@@ -9,9 +9,8 @@ describe('hidden thingy', function() {
 
     loadFixture('sample');
     browser.driver.executeScript('history.back()');
-    var expectedValue = browser.params.browser.toLowerCase() === ('chrome' || 'safari') ? '{{ 7 * 6 }}' : '';
     element(by.css('input')).getAttribute('value').then(function (text){
-      expect(text).toEqual(expectedValue);
+      expect(text).toEqual('');
     });
   });
 });

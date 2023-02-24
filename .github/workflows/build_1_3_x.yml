@@ -32,5 +32,4 @@ jobs:
       - name: Tests
         run: |
           npm run test:app -- --browsers=ChromeHeadless
-          npm run e2e -- --browsers=ChromeHeadless
-
+          npm run e2e
