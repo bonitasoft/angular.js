@@ -1,0 +1,37 @@
+name: Release angular.js
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: new version to release ([0-9]+\.[0-9]+\.[0-9]+(-[a-z]+\.[0-9]+)?)
+        default: 1.3.18-patched.01
+        required: true
+
+jobs:
+  createGithubRelease:
+    name: Create release
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v3
+      - name: Checkout bower-angular
+        uses: actions/checkout@v3
+        with:
+          repository: bonitasoft/bower-angular
+          path: 'bower-angular'
+          token: ${{ secrets.BONITA_CI_PAT }}
+      - name: Config git
+        run: |
+          git config --global user.email "angular.js-bot@users.noreply.github.com"
+          git config --global user.name "angular.js-bot"
+          git config --global pull.rebase true
+      - name: Build Setup
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+          cache: 'npm'
+      - name: Release
+        run: |
+          bash ${GITHUB_WORKSPACE}/scripts/github-actions/release.sh --git-push-dryrun=false --version-number=${{ github.event.inputs.version }}
+
