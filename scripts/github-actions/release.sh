@@ -9,12 +9,9 @@ echo "#### cut release     ############"
 echo "#################################"
 
 ARG_DEFS=(
-  # require the git dryrun flag so the script can't be run without
-  # thinking about this!
-  "--git-push-dryrun=(true|false)"
   # the version number of the release.
   # e.g. 1.2.12 or 1.2.12-rc.1
-  "--version-number=([0-9]+\.[0-9]+\.[0-9]+(-[a-z]+\.[0-9]+)?)"
+  "--version-number=([0-9]+\.[0-9]+\.[0-9]+)"
 )
 
 function init {
