@@ -21,3 +21,4 @@ npm-debug.log
 /tmp/
 /scripts/bower/bower-*
 bower-angular/
+bower-angular-sanitize/

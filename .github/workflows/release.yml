@@ -21,6 +21,12 @@ jobs:
           repository: bonitasoft/bower-angular
           path: 'bower-angular'
           token: ${{ secrets.BONITA_CI_PAT }}
+      - name: Checkout bower-angular-sanitize
+        uses: actions/checkout@v3
+        with:
+          repository: bonitasoft/bower-angular-sanitize
+          path: 'bower-angular-sanitize'
+          token: ${{ secrets.BONITA_CI_PAT }}
       - name: Config git
         run: |
           git config --global user.email "angular.js-bot@users.noreply.github.com"

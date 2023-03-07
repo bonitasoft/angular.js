@@ -42,7 +42,7 @@
         "jshint-stylish": "1.0.1",
         "karma": "0.13.20",
         "karma-browserstack-launcher": "0.1.2",
-        "karma-chrome-launcher": "0.1.5",
+        "karma-chrome-launcher": "2.2.0",
         "karma-firefox-launcher": "0.1.3",
         "karma-jasmine": "0.1.6",
         "karma-junit-reporter": "0.2.2",
@@ -4857,6 +4857,18 @@
       "integrity": "sha512-twe20eF1OxVxp/ML/kq2p1uc6KvFK/+vs8WjEbeKmV2He22MKm7YF2ANIt+EOqhJ5L3K/SuuPhk0hWQDjOM23g==",
       "dev": true
     },
+    "node_modules/fs-access": {
+      "version": "1.0.1",
+      "resolved": "https://registry.npmjs.org/fs-access/-/fs-access-1.0.1.tgz",
+      "integrity": "sha512-05cXDIwNbFaoFWaz5gNHlUTbH5whiss/hr/ibzPd4MH3cR4w0ZKeIPiVdbyJurg3O5r/Bjpvn9KOb1/rPMf3nA==",
+      "dev": true,
+      "dependencies": {
+        "null-check": "^1.0.0"
+      },
+      "engines": {
+        "node": ">=0.10.0"
+      }
+    },
     "node_modules/fs.realpath": {
       "version": "1.0.0",
       "resolved": "https://registry.npmjs.org/fs.realpath/-/fs.realpath-1.0.0.tgz",
@@ -8648,12 +8660,25 @@
       }
     },
     "node_modules/karma-chrome-launcher": {
-      "version": "0.1.5",
-      "resolved": "https://registry.npmjs.org/karma-chrome-launcher/-/karma-chrome-launcher-0.1.5.tgz",
-      "integrity": "sha512-8P1NlX2fMKRlcBW0rVA3N/7V2FSJ5d6LB2yqVeby1xWx72t9F/++sl8F5JdTXNz7GeyEwbhTrm3/CEAPTAukgw==",
+      "version": "2.2.0",
+      "resolved": "https://registry.npmjs.org/karma-chrome-launcher/-/karma-chrome-launcher-2.2.0.tgz",
+      "integrity": "sha512-uf/ZVpAabDBPvdPdveyk1EPgbnloPvFFGgmRhYLTDH7gEB4nZdSBk8yTU47w1g/drLSx5uMOkjKk7IWKfWg/+w==",
       "dev": true,
-      "peerDependencies": {
-        "karma": ">=0.9.3"
+      "dependencies": {
+        "fs-access": "^1.0.0",
+        "which": "^1.2.1"
+      }
+    },
+    "node_modules/karma-chrome-launcher/node_modules/which": {
+      "version": "1.3.1",
+      "resolved": "https://registry.npmjs.org/which/-/which-1.3.1.tgz",
+      "integrity": "sha512-HxJdYWq1MTIQbJ3nw0cqssHoTNU267KlrDuGZ1WYlxDStUtKUhOaJmh112/TZmHxxUfuJqPXSOm7tDyas0OSIQ==",
+      "dev": true,
+      "dependencies": {
+        "isexe": "^2.0.0"
+      },
+      "bin": {
+        "which": "bin/which"
       }
     },
     "node_modules/karma-firefox-launcher": {
@@ -10869,6 +10894,15 @@
       "dev": true,
       "dependencies": {
         "wrappy": "1"
+      }
+    },
+    "node_modules/null-check": {
+      "version": "1.0.0",
+      "resolved": "https://registry.npmjs.org/null-check/-/null-check-1.0.0.tgz",
+      "integrity": "sha512-j8ZNHg19TyIQOWCGeeQJBuu6xZYIEurf8M1Qsfd8mFrGEfIZytbw18YjKWg+LcO25NowXGZXZpKAx+Ui3TFfDw==",
+      "dev": true,
+      "engines": {
+        "node": ">=0.10.0"
       }
     },
     "node_modules/nunjucks": {
@@ -17002,7 +17036,7 @@
         "fstream": "~1.0.2",
         "fstream-ignore": "~1.0.1",
         "glob": "~4.0.2",
-        "graceful-fs": "4.2.10",
+        "graceful-fs": "~3.0.1",
         "handlebars": "~2.0.0",
         "inquirer": "0.7.1",
         "insight": "0.4.3",
@@ -17037,7 +17071,7 @@
           "integrity": "sha512-D0H1thJnOVgI0zRV3H/Vmb9HWmDgGTTR7PeT8Lk0ri2kMmfK3oKQBolfqJuRpBVpTx5Q5PKGl9hdQEQNTXJI7Q==",
           "dev": true,
           "requires": {
-            "graceful-fs": "4.2.10",
+            "graceful-fs": "^3.0.2",
             "inherits": "2",
             "minimatch": "^1.0.0",
             "once": "^1.3.0"
@@ -17100,7 +17134,7 @@
       "integrity": "sha512-Ly0EwAJGD5fX7y7vSvgo+yKPh+oME9jYd5Npqecxs5izpjV8aMZGF3j1ZhDDOCBIFDVNk+gGmKZAFAPmr86jLQ==",
       "dev": true,
       "requires": {
-        "graceful-fs": "4.2.10",
+        "graceful-fs": "~2.0.0",
         "mout": "~0.9.0",
         "optimist": "~0.6.0",
         "osenv": "0.0.3"
@@ -17143,7 +17177,7 @@
       "dev": true,
       "requires": {
         "deep-extend": "~0.2.5",
-        "graceful-fs": "4.2.10",
+        "graceful-fs": "~2.0.0",
         "intersect": "~0.0.3"
       }
     },
@@ -17161,7 +17195,7 @@
       "requires": {
         "async": "~0.2.8",
         "bower-config": "~0.5.0",
-        "graceful-fs": "4.2.10",
+        "graceful-fs": "~2.0.0",
         "lru-cache": "~2.3.0",
         "mkdirp": "~0.3.5",
         "request": "~2.51.0",
@@ -18156,7 +18190,7 @@
       "integrity": "sha512-2aMMi3erDQwgL7BgnW0aIzILAikpVH4TVEz60F/naT+XsPPX6IaPEuF/zD28XSNFWO/mHQ9OVRxkvcSbq6EFdA==",
       "dev": true,
       "requires": {
-        "graceful-fs": "4.2.10",
+        "graceful-fs": "^3.0.1",
         "js-yaml": "^3.1.0",
         "mkdirp": "^0.5.0",
         "object-assign": "^2.0.0",
@@ -18687,7 +18721,7 @@
       "dev": true,
       "requires": {
         "binary": "~0.3.0",
-        "graceful-fs": "4.2.10",
+        "graceful-fs": "~3.0.0",
         "mkpath": "~0.1.0",
         "nopt": "~2.2.0",
         "q": "~1.0.0",
@@ -20318,6 +20352,15 @@
       "integrity": "sha512-twe20eF1OxVxp/ML/kq2p1uc6KvFK/+vs8WjEbeKmV2He22MKm7YF2ANIt+EOqhJ5L3K/SuuPhk0hWQDjOM23g==",
       "dev": true
     },
+    "fs-access": {
+      "version": "1.0.1",
+      "resolved": "https://registry.npmjs.org/fs-access/-/fs-access-1.0.1.tgz",
+      "integrity": "sha512-05cXDIwNbFaoFWaz5gNHlUTbH5whiss/hr/ibzPd4MH3cR4w0ZKeIPiVdbyJurg3O5r/Bjpvn9KOb1/rPMf3nA==",
+      "dev": true,
+      "requires": {
+        "null-check": "^1.0.0"
+      }
+    },
     "fs.realpath": {
       "version": "1.0.0",
       "resolved": "https://registry.npmjs.org/fs.realpath/-/fs.realpath-1.0.0.tgz",
@@ -20338,7 +20381,7 @@
       "integrity": "sha512-WvJ193OHa0GHPEL+AycEJgxvBEwyfRkN1vhjca23OaPVMCaLCXTd5qAu82AjTcgP1UJmytkOKb63Ypde7raDIg==",
       "dev": true,
       "requires": {
-        "graceful-fs": "4.2.10",
+        "graceful-fs": "^4.1.2",
         "inherits": "~2.0.0",
         "mkdirp": ">=0.5 0",
         "rimraf": "2"
@@ -20722,7 +20765,7 @@
           "integrity": "sha512-ANhy2V2+tFpRajE3wN4DhkNQ08KDr0Ir1qL12/cUe5+a7STEK8jkW4onUYuY8/06qAFuT5je7mjAqzx0eKI2tQ==",
           "dev": true,
           "requires": {
-            "graceful-fs": "4.2.10",
+            "graceful-fs": "~1.2.0",
             "inherits": "1",
             "minimatch": "~0.2.11"
           }
@@ -20838,7 +20881,7 @@
           "integrity": "sha512-ANhy2V2+tFpRajE3wN4DhkNQ08KDr0Ir1qL12/cUe5+a7STEK8jkW4onUYuY8/06qAFuT5je7mjAqzx0eKI2tQ==",
           "dev": true,
           "requires": {
-            "graceful-fs": "4.2.10",
+            "graceful-fs": "~1.2.0",
             "inherits": "1",
             "minimatch": "~0.2.11"
           }
@@ -21623,7 +21666,7 @@
       "dev": true,
       "requires": {
         "convert-source-map": "^1.0.0",
-        "graceful-fs": "4.2.10",
+        "graceful-fs": "^3.0.5",
         "strip-bom": "^1.0.0",
         "through2": "^0.6.3",
         "vinyl": "^0.4.6"
@@ -23044,7 +23087,7 @@
           "integrity": "sha512-D0H1thJnOVgI0zRV3H/Vmb9HWmDgGTTR7PeT8Lk0ri2kMmfK3oKQBolfqJuRpBVpTx5Q5PKGl9hdQEQNTXJI7Q==",
           "dev": true,
           "requires": {
-            "graceful-fs": "4.2.10",
+            "graceful-fs": "^3.0.2",
             "inherits": "2",
             "minimatch": "^1.0.0",
             "once": "^1.3.0"
@@ -23383,7 +23426,7 @@
         "dom-serialize": "^2.2.0",
         "expand-braces": "^0.1.1",
         "glob": "^7.0.0",
-        "graceful-fs": "4.2.10",
+        "graceful-fs": "^4.1.2",
         "http-proxy": "^1.13.0",
         "isbinaryfile": "^3.0.0",
         "lodash": "^3.8.0",
@@ -23731,7 +23774,7 @@
           "integrity": "sha512-1JU/8q+VgFZyxwrJ+SVIOsh+KywWGpds3NTqikiKpDMZWScmAYyKIgqkO+ARvNWJfXeXR1zxz7aHF4u4CyH6vQ==",
           "dev": true,
           "requires": {
-            "graceful-fs": "4.2.10",
+            "graceful-fs": "^4.1.11",
             "micromatch": "^3.1.10",
             "readable-stream": "^2.0.2"
           }
@@ -23785,11 +23828,25 @@
       }
     },
     "karma-chrome-launcher": {
-      "version": "0.1.5",
-      "resolved": "https://registry.npmjs.org/karma-chrome-launcher/-/karma-chrome-launcher-0.1.5.tgz",
-      "integrity": "sha512-8P1NlX2fMKRlcBW0rVA3N/7V2FSJ5d6LB2yqVeby1xWx72t9F/++sl8F5JdTXNz7GeyEwbhTrm3/CEAPTAukgw==",
+      "version": "2.2.0",
+      "resolved": "https://registry.npmjs.org/karma-chrome-launcher/-/karma-chrome-launcher-2.2.0.tgz",
+      "integrity": "sha512-uf/ZVpAabDBPvdPdveyk1EPgbnloPvFFGgmRhYLTDH7gEB4nZdSBk8yTU47w1g/drLSx5uMOkjKk7IWKfWg/+w==",
       "dev": true,
-      "requires": {}
+      "requires": {
+        "fs-access": "^1.0.0",
+        "which": "^1.2.1"
+      },
+      "dependencies": {
+        "which": {
+          "version": "1.3.1",
+          "resolved": "https://registry.npmjs.org/which/-/which-1.3.1.tgz",
+          "integrity": "sha512-HxJdYWq1MTIQbJ3nw0cqssHoTNU267KlrDuGZ1WYlxDStUtKUhOaJmh112/TZmHxxUfuJqPXSOm7tDyas0OSIQ==",
+          "dev": true,
+          "requires": {
+            "isexe": "^2.0.0"
+          }
+        }
+      }
     },
     "karma-firefox-launcher": {
       "version": "0.1.3",
@@ -23980,7 +24037,7 @@
       "integrity": "sha512-cy7ZdNRXdablkXYNI049pthVeXFurRyb9+hA/dZzerZ0pGTx42z+y+ssxBaVV2l70t1muq5IdKhn4UtcoGUY9A==",
       "dev": true,
       "requires": {
-        "graceful-fs": "4.2.10",
+        "graceful-fs": "^4.1.2",
         "parse-json": "^2.2.0",
         "pify": "^2.0.0",
         "pinkie-promise": "^2.0.0",
@@ -25009,7 +25066,7 @@
           "integrity": "sha512-WPaLsMHD1lYEqAmIQI6VOJSPwuBdGShDWnj1yUo0vQqEO809R8W3LM9OVU13CnnDhyv/EiNwOtxEW74SmrzS6w==",
           "dev": true,
           "requires": {
-            "graceful-fs": "4.2.10",
+            "graceful-fs": "~2.0.0",
             "inherits": "2",
             "minimatch": "~0.2.11"
           }
@@ -25343,6 +25400,12 @@
           }
         }
       }
+    },
+    "null-check": {
+      "version": "1.0.0",
+      "resolved": "https://registry.npmjs.org/null-check/-/null-check-1.0.0.tgz",
+      "integrity": "sha512-j8ZNHg19TyIQOWCGeeQJBuu6xZYIEurf8M1Qsfd8mFrGEfIZytbw18YjKWg+LcO25NowXGZXZpKAx+Ui3TFfDw==",
+      "dev": true
     },
     "nunjucks": {
       "version": "3.2.3",
@@ -25897,7 +25960,7 @@
       "integrity": "sha512-S4eENJz1pkiQn9Znv33Q+deTOKmbl+jj1Fl+qiP/vYezj+S8x+J3Uo0ISrx/QoEvIlOaDWJhPaRd1flJ9HXZqg==",
       "dev": true,
       "requires": {
-        "graceful-fs": "4.2.10",
+        "graceful-fs": "^4.1.2",
         "pify": "^2.0.0",
         "pinkie-promise": "^2.0.0"
       }
@@ -28492,7 +28555,7 @@
           "integrity": "sha512-N1pLGEHoDyCoI8uMmPXJXhn238L4nk41iipXCrqs4Ss0ooYSr5sNj2ucMo5AqJVC4OaOa7IztpBhOaaYTGZVuA==",
           "dev": true,
           "requires": {
-            "graceful-fs": "4.2.10",
+            "graceful-fs": "~3.0.2",
             "inherits": "~2.0.0",
             "mkdirp": "0.5",
             "rimraf": "2"
@@ -28753,7 +28816,7 @@
         "defaults": "^1.0.0",
         "glob-stream": "^3.1.5",
         "glob-watcher": "^0.0.6",
-        "graceful-fs": "4.2.10",
+        "graceful-fs": "^3.0.0",
         "mkdirp": "^0.5.0",
         "strip-bom": "^1.0.0",
         "through2": "^0.6.1",
