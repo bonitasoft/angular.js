@@ -6344,18 +6344,43 @@ describe('$compile', function() {
         $provide.value('$$sanitizeUri', $$sanitizeUri);
       });
       inject(function($compile, $rootScope) {
-        element = $compile('<svg><a xlink:href="" ng-href="{{ testUrl }}"></a></svg>')($rootScope);
-        $rootScope.testUrl = "evilUrl";
+        var elementA = $compile('<svg><a xlink:href="{{ testUrl + \'aTag\' }}"></a></svg>')($rootScope);
+        var elementImage = $compile('<svg><image xlink:href="{{ testUrl + \'imageTag\' }}"></image></svg>')($rootScope);
 
-        $$sanitizeUri.andReturn('someSanitizedUrl');
+        //both of these fail the RESOURCE_URL test, that shouldn't be run
+        // This URL would fail the RESOURCE_URL trusted list, but that test shouldn't be run
+        // because these interpolations will be resolved against the URL context instead
+        $rootScope.testUrl = 'https://bad.example.org';
+        $$sanitizeUri.andReturn('https://clean.example.org');
+
         $rootScope.$apply();
-        expect(element.find('a').prop('href').baseVal).toBe('someSanitizedUrl');
+        expect(elementA.find('a').attr('xlink:href')).toBe('https://clean.example.org');
+        expect(elementImage.find('image').attr('xlink:href')).toBe('https://clean.example.org');
+        // <a> is navigational, so the second argument should be false to reach the aHref whitelist
+        expect($$sanitizeUri).toHaveBeenCalledWith($rootScope.testUrl + 'aTag' , false);
+        // <image> is media inclusion, it should use the imgSrc whitelist
+        expect($$sanitizeUri).toHaveBeenCalledWith($rootScope.testUrl + 'imageTag', true);
+      });
+    });
+
+    it('should use $$sanitizeUri when working with svg and xlink:href through ng-href', function() {
+      var $$sanitizeUri = jasmine.createSpy('$$sanitizeUri');
+      module(function($provide) {
+        $provide.value('$$sanitizeUri', $$sanitizeUri);
+      });
+      inject(function($compile, $rootScope) {
+        element = $compile('<svg><a xlink:href="" ng-href="{{ testUrl }}"></a></svg>')($rootScope);
+        //both of these fail the RESOURCE_URL test, that shouldn't be run
+        $rootScope.testUrl = 'https://bad.example.org';
+        $$sanitizeUri.andReturn('https://clean.example.org');
+
+        $rootScope.$apply();
+        expect(element.find('a').prop('href').baseVal).toBe('https://clean.example.org');
         expect($$sanitizeUri).toHaveBeenCalledWith($rootScope.testUrl, false);
       });
     });
 
-
-    it('should use $$sanitizeUri when working with svg and xlink:href', function() {
+    it('should use $$sanitizeUri when working with svg and xlink:href through ng-href', function() {
       var $$sanitizeUri = jasmine.createSpy('$$sanitizeUri');
       module(function($provide) {
         $provide.value('$$sanitizeUri', $$sanitizeUri);
@@ -6368,6 +6393,17 @@ describe('$compile', function() {
         $rootScope.$apply();
         expect(element.find('a').prop('href').baseVal).toBe('someSanitizedUrl');
         expect($$sanitizeUri).toHaveBeenCalledWith($rootScope.testUrl, false);
+      });
+    });
+
+    it('should have a RESOURCE_URL context for xlink:href by default', function() {
+      inject(function($compile, $rootScope) {
+        element = $compile('<svg><whatever xlink:href="{{ testUrl }}"></whatever></svg>')($rootScope);
+        $rootScope.testUrl = 'https://bad.example.org';
+
+        expect(function() {
+          $rootScope.$apply();
+        }).toThrow();
       });
     });
   });
@@ -6460,6 +6496,22 @@ describe('$compile', function() {
     }));
   });
 
+  describe('base[href]', function() {
+    it('should be a RESOURCE_URL context', inject(function($compile, $rootScope, $sce) {
+      element = $compile('<base href="{{testUrl}}"/>')($rootScope);
+
+      $rootScope.testUrl = $sce.trustAsResourceUrl('https://example.com/');
+      $rootScope.$apply();
+      expect(element.attr('href')).toContain('https://example.com/');
+
+      $rootScope.testUrl = 'https://not.example.com/';
+      expect(function() { $rootScope.$apply(); }).toThrowMinErr(
+          '$interpolate', 'interr', 'Can\'t interpolate: {{testUrl}}\nError: [$sce:insecurl] Blocked ' +
+          'loading resource from url not allowed by $sceDelegate policy.  URL: ' +
+          'https://not.example.com/');
+    }));
+  });
+
   describe('form[action]', function() {
     it('should pass through action attribute for the same domain', inject(function($compile, $rootScope, $sce) {
       element = $compile('<form action="{{testUrl}}"></form>')($rootScope);
@@ -6506,7 +6558,39 @@ describe('$compile', function() {
     }));
   });
 
-  if (!msie || msie >= 11) {
+  describe('link[href]', function() {
+    it('should reject invalid RESOURCE_URLs', inject(function($compile, $rootScope) {
+      element = $compile('<link href="{{testUrl}}" rel="stylesheet" />')($rootScope);
+      $rootScope.testUrl = 'https://evil.example.org/css.css';
+      expect(function() { $rootScope.$apply(); }).toThrowMinErr(
+          '$interpolate', 'interr', 'Can\'t interpolate: {{testUrl}}\nError: [$sce:insecurl] Blocked ' +
+          'loading resource from url not allowed by $sceDelegate policy.  URL: ' +
+          'https://evil.example.org/css.css');
+    }));
+
+    it('should accept valid RESOURCE_URLs', inject(function($compile, $rootScope, $sce) {
+      element = $compile('<link href="{{testUrl}}" rel="stylesheet" />')($rootScope);
+
+      $rootScope.testUrl = './css1.css';
+      $rootScope.$apply();
+      expect(element.attr('href')).toContain('css1.css');
+
+      $rootScope.testUrl = $sce.trustAsResourceUrl('https://elsewhere.example.org/css2.css');
+      $rootScope.$apply();
+      expect(element.attr('href')).toContain('https://elsewhere.example.org/css2.css');
+    }));
+
+    it('should accept valid constants', inject(function($compile, $rootScope) {
+      element = $compile('<link href="https://elsewhere.example.org/css2.css" rel="stylesheet" />')($rootScope);
+
+      $rootScope.$apply();
+      expect(element.attr('href')).toContain('https://elsewhere.example.org/css2.css');
+    }));
+  });
+
+  // Support: IE 9-10 only
+  // IEs <11 don't support srcdoc
+  if (!msie || msie === 11) {
     describe('iframe[srcdoc]', function() {
       it('should NOT set iframe contents for untrusted values', inject(function($compile, $rootScope, $sce) {
         element = $compile('<iframe srcdoc="{{html}}"></iframe>')($rootScope);
