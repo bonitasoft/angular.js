@@ -18,7 +18,11 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3
-      - name: Build Setup
+      - name: Chrome setup
+        uses: browser-actions/setup-chrome@v1
+        with:
+          chrome-version: stable
+      - name: Node setup
         uses: actions/setup-node@v3
         with:
           node-version: '16'
