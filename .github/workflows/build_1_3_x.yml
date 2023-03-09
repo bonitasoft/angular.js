@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3
-      - name: Build Setup
+      - name: Build setup
         uses: actions/setup-node@v3
         with:
           node-version: '16'
