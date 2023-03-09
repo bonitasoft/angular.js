@@ -29,6 +29,7 @@ jobs:
           cache: 'npm'
       - name: Build
         run: |
+          /usr/bin/google-chrome --version
           npm install -g grunt-cli@0.1.13
           npm i
           npm i
