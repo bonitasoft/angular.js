@@ -1,0 +1,17 @@
+name: Check angular.js CVEs on SNYK
+
+on:
+  schedule:
+    - cron: "0 0 1 * *"
+
+jobs:
+  build:
+    name: Check for new CVEs
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v3
+      - name: Check CVEs
+        run: |
+          bash ${GITHUB_WORKSPACE}/scripts/github-actions/check-cves.sh
+
