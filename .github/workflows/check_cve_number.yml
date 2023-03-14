@@ -16,7 +16,7 @@ jobs:
         run: |
           bash ${GITHUB_WORKSPACE}/scripts/github-actions/check-cves.sh
       - name: Send message to Slack channel
-        if: ${{ failure() && (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/v1.3.x') }}
+        if: ${{ failure() }}
         uses: bonitasoft/actions/packages/notify-slack@v2.2.0
         with:
           CHANNEL_ID: ${{ secrets.SLACK_RD_CHANNEL_ID }}
