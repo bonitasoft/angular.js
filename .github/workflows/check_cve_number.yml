@@ -1,4 +1,4 @@
-name: Check angular.js CVEs on SNYK
+name: Search for new angular.js CVEs on SNYK
 
 on:
   schedule:
