@@ -17,11 +17,11 @@ jobs:
           bash ${GITHUB_WORKSPACE}/scripts/github-actions/check-cves.sh
       - name: Send message to Slack channel
         if: ${{ failure() }}
-        uses: bonitasoft/actions/packages/notify-slack@v2.2.0
+        uses: bonitasoft/notify-slack-action@v1
         with:
-          CHANNEL_ID: ${{ secrets.SLACK_RD_CHANNEL_ID }}
-          MESSAGE: |
+          keeper-secret-config: ${{ secrets.KSM_CONFIG }}
+          channel-id: ${{ vars.RD_PLATFORM_SLACK_CHANNEL_ID }}
+          message: |
             :x: The CVE count for AngularJs 1.3.20 has changed or could not connect to SNYK
 
             Check the failing build to see if there are new available CVEs for AngularJs 1.3.20
-          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
