@@ -1118,9 +1118,13 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
           // first check if there are spaces because it's not the same pattern
           var trimmedSrcset = trim(value);
           //                (   999x   ,|   999w   ,|   ,|,   )
-          // we factorize the common parts of the first pattern.
-          // the additional '\s*' after ',' changes the length of resulting strings wich are trimmed anyway,
-          // but it helps not matching both combinations when candidates have spaces before and after the comma.
+          /* 
+           * Used to be /(\s+\d+x\s*,|\s+\d+w\s*,|\s+,|,\s+)/
+           * We factorize the common parts of the first patterns (with spaces before the comma).
+           * The additional '\s*' after ',' changes the length of resulting strings wich are trimmed anyway,
+           * but it helps not matching both combinations when candidates have spaces before and after the comma.
+           * This reduces the split complexity to linear and avoid the ReDoS.
+           */
           var srcPattern = /(\s+(?:\d+(?:x\s*|w\s*))?,\s*|,\s+)/;
           var pattern = /\s/.test(trimmedSrcset) ? srcPattern : /(,)/;
 
