@@ -26,8 +26,7 @@ jobs:
       - name: Build
         run: |
           npm install -g grunt-cli@0.1.13
-          npm i
-          npm i
+          npm ci
           npm run build:app
       - name: Tests
         run: |
