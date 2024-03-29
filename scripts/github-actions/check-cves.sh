@@ -1,7 +1,7 @@
 curl --request GET -sL \
      --url 'https://security.snyk.io/package/npm/angular/1.3.20'\
      --output 'test.html'
-EXPECTED_NUMBER=4
+EXPECTED_NUMBER=6
 NUMBER=$(grep -o -i '<li class="vue--severity__item vue--severity__item--high' test.html | wc -l)
 
 # Main reason this might happen is if their page structure changed
