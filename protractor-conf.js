@@ -12,4 +12,6 @@ config.capabilities = {
   browserName: 'chrome'
 };
 
+config.chromeDriver = `./node_modules/chromedriver/lib/chromedriver/chromedriver${process.platform.indexOf('win') === 0 ? '.exe' : ''}`
+
 exports.config = config;
